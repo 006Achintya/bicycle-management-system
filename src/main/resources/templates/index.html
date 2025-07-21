@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html  lang="en" xmlns:th="http://www.thymeleaf.org" 
+th:replace="~{base::layout(~{::section})}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<section>
+	<!-- Responsive Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top" id="mainNavbar">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/">Cycle Shop</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/products">Products</a></li>
+        <li class="nav-item"><a class="nav-link" href="/categories">Categories</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+        <li class="nav-item">
+          <button class="btn btn-sm btn-outline-secondary ms-3" id="themeToggle">Toggle Theme</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- End Navbar -->
+
+<!-- Start Slider -->
+<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="img/pexels-pixabay-210095.jpg" class="d-block w-100 animate__animated animate__fadeIn" alt="Cycle Image" style="height: 400px; object-fit: cover;">
+    </div>
+    <div class="carousel-item">
+      <img src="img/pexels-leandro-boogalu-5876-1149601.jpg" class="d-block w-100 animate__animated animate__fadeIn" alt="Cycle Image" style="height: 400px; object-fit: cover;">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+<!-- End Slider -->
+
+<!-- Search & Filter -->
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <input type="text" class="form-control" id="searchInput" placeholder="Search products...">
+    </div>
+    <div class="col-md-6">
+      <select class="form-select" id="categoryFilter">
+        <option value="">All Categories</option>
+        <option th:each="c : ${category}" th:value="${c.name}" th:text="${c.name}"></option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Start Category Module -->
+<div class="container py-5">
+  <h2 class="text-center mb-4">Browse Categories</h2>
+  <div class="row g-4">
+    <div class="col-md-6" th:each="c:${category}">
+      <div class="card h-100 text-center shadow-lg border-0 hover-shadow animate__animated animate__fadeInUp" data-aos="fade-up">
+        <div class="card-body">
+          <img th:src="${c.imageName}" class="img-fluid mb-3" style="height: 140px; object-fit: contain; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+          <h5><a th:href="@{'/products?category='+${c.name}}" class="text-decoration-none text-dark">[[${c.name}]]</a></h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Category Module -->
+
+<!-- Start Product Module -->
+<div class="container-fluid bg-light py-5">
+  <h2 class="text-center mb-4">Latest Cycles</h2>
+  <div class="row justify-content-center g-4 px-3" id="productList">
+    <div class="col-md-3" th:each="p:${products}" th:attr="data-category=${p.category}, data-title=${p.title.toLowerCase()}">
+      <div class="card text-center shadow-sm h-100 border-0 animate__animated animate__zoomIn hover-shadow" data-bs-toggle="modal" th:data-bs-target="#{'productModal' + ${p.id}}" data-aos="zoom-in">
+        <div class="card-body">
+          <img th:src="${p.image}" class="img-fluid mb-3" style="height: 140px; object-fit: contain; transition: transform 0.3s;">
+          <h6><a th:href="@{'/product/'+${p.id}}" class="text-decoration-none text-dark">[[${p.title}]]</a></h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Product Module -->
+
+<!-- Modals for Product Preview -->
+<div th:each="p : ${products}">
+  <div class="modal fade" th:id="${'productModal' + p.id}" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">[[${p.title}]]</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center">
+          <img th:src="${p.image}" class="img-fluid mb-3" style="max-height: 200px;">
+          <p th:text="${p.description}"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Product Modals -->
+
+<!-- Add Animate.css and AOS CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>AOS.init();</script>
+
+<!-- Optional custom hover effect and dark mode toggle -->
+<style>
+.hover-shadow:hover {
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.15) !important;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+
+@media (max-width: 576px) {
+  .navbar-brand, .nav-link, .form-control, .form-select {
+    font-size: 0.9rem;
+  }
+  .card h6, .card h5 {
+    font-size: 0.95rem;
+  }
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+body.dark-mode .card,
+body.dark-mode .navbar,
+body.dark-mode .modal-content,
+body.dark-mode .form-control,
+body.dark-mode .form-select,
+body.dark-mode .container-fluid.bg-light {
+  background-color: #1e1e1e !important;
+  color: #fff !important;
+}
+
+body.dark-mode .form-control::placeholder {
+  color: #ccc;
+}
+
+body.dark-mode h2,
+body.dark-mode h6,
+body.dark-mode h5,
+body.dark-mode p,
+body.dark-mode a,
+body.dark-mode .text-center {
+  color: #fff !important;
+}
+</style>
+
+<script>
+document.getElementById("themeToggle").addEventListener("click", function () {
+  document.body.classList.toggle("dark-mode");
+});
+
+// Product search and filter
+const searchInput = document.getElementById('searchInput');
+const categoryFilter = document.getElementById('categoryFilter');
+const products = document.querySelectorAll('#productList > div');
+
+function filterProducts() {
+  const searchTerm = searchInput.value.toLowerCase();
+  const selectedCategory = categoryFilter.value;
+
+  products.forEach(card => {
+    const title = card.getAttribute('data-title');
+    const category = card.getAttribute('data-category');
+    const matchesSearch = title.includes(searchTerm);
+    const matchesCategory = !selectedCategory || category === selectedCategory;
+
+    card.style.display = matchesSearch && matchesCategory ? 'block' : 'none';
+  });
+}
+
+searchInput.addEventListener('input', filterProducts);
+categoryFilter.addEventListener('change', filterProducts);
+</script>
+<!-- Inserted pagination controls -->
+<div class="container text-center mt-4">
+  <nav aria-label="Product pagination">
+    <ul class="pagination justify-content-center" id="pagination"></ul>
+  </nav>
+</div>
+
+<!-- Add sorting dropdown -->
+<div class="container mb-4">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <select class="form-select" id="sortOptions">
+        <option value="default">Sort by Default</option>
+        <option value="title">Sort by Title (A-Z)</option>
+        <option value="title-desc">Sort by Title (Z-A)</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<script>
+
+// SORTING
+const productContainer = document.getElementById('productList');
+let productCards = Array.from(productContainer.children); // get all product card elements
+
+const sortSelect = document.getElementById('sortOptions');
+sortSelect.addEventListener('change', function () {
+  const value = this.value;
+  productCards.sort((a, b) => {
+    const titleA = a.getAttribute('data-title') || '';
+    const titleB = b.getAttribute('data-title') || '';
+    if (value === 'title') return titleA.localeCompare(titleB);
+    if (value === 'title-desc') return titleB.localeCompare(titleA);
+    return 0;
+  });
+  productCards.forEach(card => productContainer.appendChild(card));
+ 
+});
+
+</script>
+
+	</section>
+</body>
+</html>

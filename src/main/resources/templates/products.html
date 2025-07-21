@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}">
+<head>
+  <meta charset="ISO-8859-1">
+  <title>Cycle Products</title>
+   <style>
+    body.dark-mode {
+      background-color: #121212 !important;
+      color: #e0e0e0 !important;
+    }
+    body.dark-mode .card,
+    body.dark-mode .list-group-item,
+    body.dark-mode .pagination .page-link,
+    body.dark-mode .btn,
+    body.dark-mode .form-control {
+      background-color: #1e1e1e !important;
+      color: #e0e0e0 !important;
+      border-color: #333 !important;
+    }
+    body.dark-mode .text-primary,
+    body.dark-mode h3,
+    body.dark-mode h6,
+    body.dark-mode p,
+    body.dark-mode a {
+      color: #90caf9 !important;
+    }
+    body.dark-mode .btn-outline-primary {
+      color: #90caf9 !important;
+      border-color: #90caf9 !important;
+    }
+    body.dark-mode .btn-outline-primary:hover {
+      background-color: #90caf9 !important;
+      color: #121212 !important;
+    }
+    .product-card img {
+      transition: transform 0.4s ease;
+    }
+    .product-card:hover img {
+      transform: scale(1.1);
+    }
+    .product-card .card-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .product-card .btn {
+      margin-top: auto;
+      align-self: center;
+    }
+  </style>
+</head>
+<body>
+  <button class="btn btn-sm btn-outline-secondary position-fixed top-0 end-0 m-3 z-3" id="themeToggle">Toggle Theme</button>
+  <section>
+    <!-- Enhanced Cycle Page UI with Filters, Badges, Lazy Loading -->
+    <div class="container-fluid bg-primary p-5 mt-5 text-white rounded-bottom shadow">
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+          <form action="/products" method="get">
+            <div class="input-group shadow-sm">
+              <input type="text" class="form-control form-control-lg" name="ch" placeholder="Search for cycles...">
+              <button class="btn btn-light text-dark ms-3 px-4 fw-bold">
+                <i class="fa-solid fa-magnifying-glass"></i> Search
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid mt-3">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2">
+          <div class="card shadow-sm mb-4 border-0">
+            <div class="card-body">
+              <h6 class="text-primary text-center">Categories</h6>
+              <div class="list-group">
+                <a href="/products"
+                   th:classappend="${paramValue==''} ? 'active':''"
+                   class="list-group-item list-group-item-action">
+                  All
+                </a>
+                <a th:each="c:${categories}"
+                   th:href="@{'/products?category='+${c.name}}"
+                   th:classappend="${paramValue == c.name} ? 'active':''"
+                   class="list-group-item list-group-item-action">
+                  [[${c.name}]]
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cycle Grid -->
+        <div class="col-md-10">
+          <div class="card shadow-sm border-0">
+            <div class="card-body">
+              <h3 class="text-center text-primary mb-4">Cycles</h3>
+              <div class="row g-4">
+                <th:block th:if="${productsSize > 0}">
+                  <div class="col-md-3 d-flex" th:each="p:${products}">
+                    <div class="card product-card w-100 d-flex flex-column justify-content-between border-0 shadow-sm position-relative">
+                      <div th:if="${p.discount > 20}" class="badge bg-danger position-absolute top-0 end-0 m-2">Hot</div>
+                      <div th:if="${p.discount <= 20 && p.discount >= 10}" class="badge bg-warning text-dark position-absolute top-0 end-0 m-2">Deal</div>
+                      <div class="card-body text-center">
+                        <div>
+                          <img th:src="${p.image}" alt="[[${p.title}]]"
+                               class="img-fluid rounded mb-3 lazy" style="width: 100%; height: 180px; object-fit: cover;" loading="lazy">
+                        </div>
+                        <p class="product-title">[[${p.title}]]</p>
+                        <p class="product-price">
+                          <span class="fw-bold text-dark">₹[[${p.discountPrice}]]</span><br>
+                          <del class="text-muted">₹[[${p.price}]]</del>
+                          <span class="text-success">[[${p.discount}]]% off</span>
+                        </p>
+                        <a th:href="@{'/product/'+${p.id}}" class="btn btn-outline-primary mt-3">View Details</a>
+                      </div>
+                    </div>
+                  </div>
+                </th:block>
+                <th:block th:unless="${productsSize > 0}">
+                  <p class="fs-4 text-center mt-4 text-danger">Cycle not available</p>
+                </th:block>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pagination -->
+          <div class="row mt-3">
+            <div class="col-md-4"><strong>Total Cycles:</strong> [[${totalElements}]]</div>
+            <div class="col-md-6">
+              <th:block th:if="${productsSize > 0}">
+                <nav aria-label="Page navigation">
+                  <ul class="pagination justify-content-end">
+                    <li class="page-item" th:classappend="${isFirst} ? 'disabled'">
+                      <a class="page-link" th:href="@{'/products?pageNo='+${pageNo-1}}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                    <li th:each="i:${#numbers.sequence(1,totalPages)}" class="page-item"
+                        th:classappend="${pageNo+1==i} ? 'active'">
+                      <a class="page-link" th:href="@{'/products?pageNo='+${i-1}}">[[${i}]]</a>
+                    </li>
+                    <li class="page-item" th:classappend="${isLast} ? 'disabled'">
+                      <a class="page-link" th:href="@{'/products?pageNo='+${pageNo+1}}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </th:block>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const themeToggle = document.getElementById("themeToggle");
+      if (!themeToggle) return;
+
+      // Apply saved theme on load
+      if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-mode");
+      }
+
+      // Toggle theme and save preference
+      themeToggle.addEventListener("click", function () {
+        document.body.classList.toggle("dark-mode");
+        localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+      });
+    });
+  </script>
+</body>
+</html>
