@@ -54,7 +54,7 @@ A Spring Boot-based e-commerce platform designed to facilitate the buying and se
 ### Setup Steps
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/bicycle-management-system.git
+   git clone https://github.com/006Achintya/bicycle-management-system.git
    cd bicycle-management-system
 2. Configure application.properties with your MySQL credentials.
 3. Run the application
