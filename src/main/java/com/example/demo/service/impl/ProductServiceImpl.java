@@ -67,15 +67,15 @@ public class ProductServiceImpl implements ProductService{
 	public Product updateProduct(Product product, MultipartFile image) {
 		Product dbProduct = getProductById(product.getId());
 		
-//		String imageName = image.isEmpty() ? dbProduct.getImage() : image.getOriginalFilename();
-		String imageUrl = commonUtil.getImageUrl(image);
+		String imageName = image.isEmpty() ? dbProduct.getImage() : image.getOriginalFilename();
+//		String imageUrl = commonUtil.getImageUrl(image);
 		
 		dbProduct.setTitle(product.getTitle());
 		dbProduct.setDescription(product.getDescription());
 		dbProduct.setCategory(product.getCategory());
 		dbProduct.setPrice(product.getPrice());
 		dbProduct.setStock(product.getStock());
-		dbProduct.setImage(imageUrl);
+		dbProduct.setImage(imageName);
 		dbProduct.setIsActive(product.getIsActive());
 		dbProduct.setDiscount(product.getDiscount());
 		
@@ -89,11 +89,11 @@ public class ProductServiceImpl implements ProductService{
 			
 			if(!image.isEmpty()) {
 				try {
-//					File saveFile = new ClassPathResource("static/img").getFile();
-//					Path path = Paths.get(saveFile.getAbsolutePath()+File.separator+image.getOriginalFilename());
-//					System.out.println(path);
-//					Files.copy(image.getInputStream(),path,StandardCopyOption.REPLACE_EXISTING);
-					fileService.uploadFileS3(image);
+					File saveFile = new ClassPathResource("static/img").getFile();
+					Path path = Paths.get(saveFile.getAbsolutePath()+File.separator+image.getOriginalFilename());
+					System.out.println(path);
+					Files.copy(image.getInputStream(),path,StandardCopyOption.REPLACE_EXISTING);
+//					fileService.uploadFileS3(image);
 					
 				} catch(Exception e) {
 					e.printStackTrace();

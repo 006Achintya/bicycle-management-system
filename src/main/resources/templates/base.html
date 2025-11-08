@@ -154,7 +154,7 @@ th:fragment="layout(content)">
 
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <img th:src="${user.profileImage}" class="rounded-circle" alt="Avatar" width="30" height="30">
+              <img th:src="@{'/img/'+${user.profileImage}}" class="rounded-circle" alt="Avatar" width="30" height="30">
               <span><i class="fa-solid fa-user me-1"></i>[[${user.name}]]</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">

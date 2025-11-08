@@ -16,34 +16,34 @@ import com.example.demo.service.FileService;
 @Service
 public class FileServiceImpl implements FileService{
 
-	@Autowired
-	public AmazonS3 amazonS3;
+//	@Autowired
+//	public AmazonS3 amazonS3;
+//	
+//	@Value("${aws.s3.bucket.images}")
+//	private String imagesBucket;
 	
-	@Value("${aws.s3.bucket.images}")
-	private String imagesBucket;
-	
-	@Override
-	public Boolean uploadFileS3(MultipartFile file) {
-		
-		String bucketName = null;
-		try {
-			bucketName = imagesBucket;
-			String fileName = file.getOriginalFilename();
-			InputStream inputStream = file.getInputStream();
-			ObjectMetadata objectMetadata = new ObjectMetadata();
-			objectMetadata.setContentType(file.getContentType());
-			objectMetadata.setContentLength(file.getSize());
-			
-			PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName,fileName,inputStream,objectMetadata);
-			PutObjectResult saveData = amazonS3.putObject(putObjectRequest);
-			if(!ObjectUtils.isEmpty(saveData)) {
-				return true;
-			}
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-		return false;
-	}
+//	@Override
+//	public Boolean uploadFileS3(MultipartFile file) {
+//		
+//		String bucketName = null;
+//		try {
+//			bucketName = imagesBucket;
+//			String fileName = file.getOriginalFilename();
+//			InputStream inputStream = file.getInputStream();
+//			ObjectMetadata objectMetadata = new ObjectMetadata();
+//			objectMetadata.setContentType(file.getContentType());
+//			objectMetadata.setContentLength(file.getSize());
+//			
+//			PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName,fileName,inputStream,objectMetadata);
+//			PutObjectResult saveData = amazonS3.putObject(putObjectRequest);
+//			if(!ObjectUtils.isEmpty(saveData)) {
+//				return true;
+//			}
+//		}
+//		catch(Exception e){
+//			e.printStackTrace();
+//		}
+//		return false;
+//	}
 	
 }

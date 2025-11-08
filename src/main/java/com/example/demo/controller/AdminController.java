@@ -111,9 +111,9 @@ public class AdminController {
 	@PostMapping("/saveCategory")
 	public String saveCategory(@ModelAttribute Category category,@RequestParam("file") MultipartFile file,HttpSession session) throws IOException {
 		
-//		String imageName = file != null ? file.getOriginalFilename() : "default.jpg";
-		String imageUrl = commonUtil.getImageUrl(file);
-		category.setImageName(imageUrl);
+		String imageName = file != null ? file.getOriginalFilename() : "default.jpg";
+//		String imageUrl = commonUtil.getImageUrl(file);
+		category.setImageName(imageName);
 		
 		Boolean existCategory = categoryService.existCategory(category.getName());
 		if(existCategory) {
@@ -126,11 +126,11 @@ public class AdminController {
 			}
 			else {
 //				+File.separator+"category_img"
-//				File saveFile = new ClassPathResource("static/img").getFile();
-//				Path path = Paths.get(saveFile.getAbsolutePath()+File.separator+file.getOriginalFilename());
-//				System.out.println(path);
-//				Files.copy(file.getInputStream(),path,StandardCopyOption.REPLACE_EXISTING);
-				fileService.uploadFileS3(file);
+				File saveFile = new ClassPathResource("static/img").getFile();
+				Path path = Paths.get(saveFile.getAbsolutePath()+File.separator+file.getOriginalFilename());
+				System.out.println(path);
+				Files.copy(file.getInputStream(),path,StandardCopyOption.REPLACE_EXISTING);
+//				fileService.uploadFileS3(file);
 				session.setAttribute("succMsg","Saved Successfully");
 			}
 		}
@@ -160,13 +160,13 @@ public class AdminController {
 	public String updateCategory(@ModelAttribute Category category,@RequestParam("file") MultipartFile file,HttpSession session) throws IOException {
 		
 		Category oldCategory = categoryService.getCategoryById(category.getId());
-//		String imageName = file.isEmpty() ? oldCategory.getImageName() : file.getOriginalFilename();
-		String imageUrl = commonUtil.getImageUrl(file);
+		String imageName = file.isEmpty() ? oldCategory.getImageName() : file.getOriginalFilename();
+//		String imageUrl = commonUtil.getImageUrl(file);
 		
 		if(!ObjectUtils.isEmpty(category)) {
 			oldCategory.setName(category.getName());
 			oldCategory.setIsActive(category.getIsActive());
-			oldCategory.setImageName(imageUrl);
+			oldCategory.setImageName(imageName);
 		}
 		
 		Category updateCategory = categoryService.saveCategory(oldCategory);
@@ -174,11 +174,11 @@ public class AdminController {
 		if(!ObjectUtils.isEmpty(updateCategory)) {
 			
 			if(!file.isEmpty()) {
-//				File saveFile = new ClassPathResource("static/img").getFile();
-//				Path path = Paths.get(saveFile.getAbsolutePath()+File.separator+file.getOriginalFilename());
-//				System.out.println(path);
-//				Files.copy(file.getInputStream(),path,StandardCopyOption.REPLACE_EXISTING);
-				fileService.uploadFileS3(file);
+				File saveFile = new ClassPathResource("static/img").getFile();
+				Path path = Paths.get(saveFile.getAbsolutePath()+File.separator+file.getOriginalFilename());
+				System.out.println(path);
+				Files.copy(file.getInputStream(),path,StandardCopyOption.REPLACE_EXISTING);
+//				fileService.uploadFileS3(file);
 			}
 			
 			session.setAttribute("succMsg", "Category update success");
@@ -192,21 +192,21 @@ public class AdminController {
 	@PostMapping("/saveProduct")
 	public String saveProduct(@ModelAttribute Product product, @RequestParam("file") MultipartFile image, HttpSession session) throws IOException {
 		
-//		String imageName = image.isEmpty() ? "default.jpg" : image.getOriginalFilename();
-		String imageUrl = commonUtil.getImageUrl(image);
+		String imageName = image.isEmpty() ? "default.jpg" : image.getOriginalFilename();
+//		String imageUrl = commonUtil.getImageUrl(image);
 		
-		product.setImage(imageUrl);
+		product.setImage(imageName);
 		product.setDiscount(0);
 		product.setDiscountPrice(product.getPrice());
 		Product saveProduct = productService.saveProduct(product);
 		
 		if(!ObjectUtils.isEmpty(saveProduct)) {
 			
-//			File saveFile = new ClassPathResource("static/img").getFile();
-//			Path path = Paths.get(saveFile.getAbsolutePath()+File.separator+image.getOriginalFilename());
-//  		System.out.println(path);
-//			Files.copy(image.getInputStream(),path,StandardCopyOption.REPLACE_EXISTING);
-			fileService.uploadFileS3(image);
+			File saveFile = new ClassPathResource("static/img").getFile();
+			Path path = Paths.get(saveFile.getAbsolutePath()+File.separator+image.getOriginalFilename());
+  		System.out.println(path);
+			Files.copy(image.getInputStream(),path,StandardCopyOption.REPLACE_EXISTING);
+//			fileService.uploadFileS3(image);
 			session.setAttribute("succMsg", "Product saved success");
 		}
 		else {
@@ -401,18 +401,18 @@ public class AdminController {
 	
 	@PostMapping("/save-admin")
 	public String saveAdmin(@ModelAttribute UserDtls user,@RequestParam("img") MultipartFile file,HttpSession session) throws IOException {
-//		String imageName = file.isEmpty() ? "default.jpg" : file.getOriginalFilename();
-		String imageUrl = commonUtil.getImageUrl(file);
-		user.setProfileImage(imageUrl);
+		String imageName = file.isEmpty() ? "default.jpg" : file.getOriginalFilename();
+//		String imageUrl = commonUtil.getImageUrl(file);
+		user.setProfileImage(imageName);
 		UserDtls saveUser = userService.saveAdmin(user);
 		
 		if(!ObjectUtils.isEmpty(saveUser)) {
 			if(!file.isEmpty()) {
-//				File saveFile = new ClassPathResource("static/img").getFile();
-//				Path path = Paths.get(saveFile.getAbsolutePath()+File.separator+file.getOriginalFilename());
-//				System.out.println(path);
-//				Files.copy(file.getInputStream(),path,StandardCopyOption.REPLACE_EXISTING);
-				fileService.uploadFileS3(file);
+				File saveFile = new ClassPathResource("static/img").getFile();
+				Path path = Paths.get(saveFile.getAbsolutePath()+File.separator+file.getOriginalFilename());
+				System.out.println(path);
+				Files.copy(file.getInputStream(),path,StandardCopyOption.REPLACE_EXISTING);
+//				fileService.uploadFileS3(file);
 				
 				session.setAttribute("succMsg", "Registered successfully");
 			}

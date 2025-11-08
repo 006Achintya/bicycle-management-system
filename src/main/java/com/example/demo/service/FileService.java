@@ -4,6 +4,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface FileService {
 	
-	public Boolean uploadFileS3(MultipartFile file);
+//	public Boolean uploadFileS3(MultipartFile file);
 	
 }

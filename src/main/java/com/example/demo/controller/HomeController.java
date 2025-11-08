@@ -150,18 +150,18 @@ public class HomeController {
 				session.setAttribute("errorMsg", "Email already exist");
 			}
 			else {
-//				String imageName = file.isEmpty() ? "default.jpg" : file.getOriginalFilename();
-				String imageUrl = commonUtil.getImageUrl(file);
-				user.setProfileImage(imageUrl);
+				String imageName = file.isEmpty() ? "default.jpg" : file.getOriginalFilename();
+//				String imageUrl = commonUtil.getImageUrl(file);
+				user.setProfileImage(imageName);
 				UserDtls saveUser = userService.saveUser(user);
 				
 				if(!ObjectUtils.isEmpty(saveUser)) {
 					if(!file.isEmpty()) {
-//						File saveFile = new ClassPathResource("static/img").getFile();
-//						Path path = Paths.get(saveFile.getAbsolutePath()+File.separator+file.getOriginalFilename());
-//						System.out.println(path);
-//						Files.copy(file.getInputStream(),path,StandardCopyOption.REPLACE_EXISTING);
-						fileService.uploadFileS3(file);
+						File saveFile = new ClassPathResource("static/img").getFile();
+						Path path = Paths.get(saveFile.getAbsolutePath()+File.separator+file.getOriginalFilename());
+						System.out.println(path);
+						Files.copy(file.getInputStream(),path,StandardCopyOption.REPLACE_EXISTING);
+//						fileService.uploadFileS3(file);
 						
 						session.setAttribute("succMsg", "Registered successfully");
 					}

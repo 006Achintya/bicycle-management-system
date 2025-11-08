@@ -53,7 +53,7 @@ th:replace="~{base::layout(~{::section})}">
 									<label>Upload Image</label>
 									<input type="file" name="file" class="form-control">
 								</div>
-								<img th:src="${category.imageName}" width="100px" height="100px">
+								<img th:src="@{'/img/'+${category.imageName}}" width="100px" height="100px">
 								<button class="btn btn-primary col-md-12 mt-2">Update</button>
 							</form>	
 						</div>

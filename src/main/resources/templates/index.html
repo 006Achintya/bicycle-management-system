@@ -72,7 +72,7 @@ th:replace="~{base::layout(~{::section})}">
     <div class="col-md-6" th:each="c:${category}">
       <div class="card h-100 text-center shadow-lg border-0 hover-shadow animate__animated animate__fadeInUp" data-aos="fade-up">
         <div class="card-body">
-          <img th:src="${c.imageName}" class="img-fluid mb-3" style="height: 140px; object-fit: contain; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+          <img th:src="@{'/img/'+${c.imageName}}" class="img-fluid mb-3" style="height: 140px; object-fit: contain; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
           <h5><a th:href="@{'/products?category='+${c.name}}" class="text-decoration-none text-dark">[[${c.name}]]</a></h5>
         </div>
       </div>
@@ -88,7 +88,7 @@ th:replace="~{base::layout(~{::section})}">
     <div class="col-md-3" th:each="p:${products}" th:attr="data-category=${p.category}, data-title=${p.title.toLowerCase()}">
       <div class="card text-center shadow-sm h-100 border-0 animate__animated animate__zoomIn hover-shadow" data-bs-toggle="modal" th:data-bs-target="#{'productModal' + ${p.id}}" data-aos="zoom-in">
         <div class="card-body">
-          <img th:src="${p.image}" class="img-fluid mb-3" style="height: 140px; object-fit: contain; transition: transform 0.3s;">
+          <img th:src="@{'/img/'+${p.image}}" class="img-fluid mb-3" style="height: 140px; object-fit: contain; transition: transform 0.3s;">
           <h6><a th:href="@{'/product/'+${p.id}}" class="text-decoration-none text-dark">[[${p.title}]]</a></h6>
         </div>
       </div>
@@ -107,7 +107,7 @@ th:replace="~{base::layout(~{::section})}">
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body text-center">
-          <img th:src="${p.image}" class="img-fluid mb-3" style="max-height: 200px;">
+          <img th:src="@{'/img/'+${p.image}}" class="img-fluid mb-3" style="max-height: 200px;">
           <p th:text="${p.description}"></p>
         </div>
       </div>

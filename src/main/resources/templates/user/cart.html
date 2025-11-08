@@ -36,7 +36,7 @@ th:replace="~{base::layout(~{::section})}">
 						  <tbody>
 						    <tr th:each="cart,c:${carts}">
 						      <th scope="row">[[${c.count}]]</th>
-						      <td><img th:src="${cart.product.image}"
+						      <td><img th:src="@{'/img/'+${cart.product.image}}"
 						      		width = "70px" height = "70px"></td>
 						      <td>[[${cart.product.title}]]</td>
 						      <td>[[${cart.product.discountPrice}]]</td>

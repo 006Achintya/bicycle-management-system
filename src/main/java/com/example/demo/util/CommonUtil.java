@@ -27,8 +27,8 @@ public class CommonUtil {
 	@Autowired
 	private UserService userService;
 	
-	@Value("${aws.s3.bucket.images}")
-	private String imagesBucket;
+//	@Value("${aws.s3.bucket.images}")
+//	private String imagesBucket;
 	
 	public Boolean sendMail(String url, String recipientEmail) throws UnsupportedEncodingException, MessagingException {
 		
@@ -97,14 +97,14 @@ public class CommonUtil {
 	
 	public String getImageUrl(MultipartFile file) {
 		
-		String bucketName = imagesBucket;
+//		String bucketName = imagesBucket;
 		
 //		https://college-cycling.s3.eu-north-1.amazonaws.com/electric.jpeg
 		
 		String imageName = file != null ? file.getOriginalFilename() : "default.jpg";
 		
-		String url = "https://" + bucketName + ".s3.eu-north-1.amazonaws.com/" + imageName;
-		return url;
+//		String url = "https://" + bucketName + ".s3.eu-north-1.amazonaws.com/" + imageName;
+		return imageName;
 	}
 
 	
